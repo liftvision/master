@@ -77,9 +77,17 @@ WSGI_APPLICATION = "app.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+        "NAME": BASE_DIR / "db" / "db.sqlite3",
     }
 }
+
+
+# Media files
+# https://docs.djangoproject.com/en/4.2/topics/files/
+
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "db" / "media"
 
 
 # Password validation
@@ -118,7 +126,8 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-STATIC_ROOT = BASE_DIR / ".static"
+STATIC_ROOT = BASE_DIR / "db" / "static"
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
