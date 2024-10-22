@@ -20,4 +20,4 @@ EXPOSE 80
 RUN ./manage.py migrate
 RUN ./manage.py collectstatic --noinput
 
-CMD ./manage.py runserver --insecure 0.0.0.0:80
+CMD ["./manage.py", "runserver", "--insecure", "0.0.0.0:80"]
