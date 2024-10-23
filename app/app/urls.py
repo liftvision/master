@@ -8,6 +8,8 @@ from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
+import lift.urls
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -16,6 +18,7 @@ urlpatterns = [
             path("", TokenObtainPairView.as_view(), name="token_obtain_pair"),
             path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
         ])),
+        path("ev/", include(lift.urls.urlpatterns)),
     ])),
     path("schema/", include([
         path("", SpectacularAPIView.as_view(), name="schema"),
