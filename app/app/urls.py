@@ -6,11 +6,16 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include([
+        path("token/", include([
+            path("", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+            path("refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+        ])),
     ])),
     path("schema/", include([
         path("", SpectacularAPIView.as_view(), name="schema"),
