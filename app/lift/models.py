@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import uuid
+import typing
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -63,11 +64,23 @@ class Camera(models.Model):
     def update_people_count(self, count: int):
         CameraPeopleCount.objects.create(camera=self, count=count)
 
+    def get_latest_frame(self) -> typing.Optional[CameraFrame]:
+        try:
+            return self.get_latest_frame_or_404()
+        except exceptions.NotFound:
+            return None
+
     def get_latest_frame_or_404(self) -> CameraFrame:
         try:
             return CameraFrame.objects.filter(camera=self).latest()
         except CameraFrame.DoesNotExist:
             raise exceptions.NotFound('Camera does not have any frame recorded.')
+
+    def get_latest_people_count(self) -> typing.Optional[CameraPeopleCount]:
+        try:
+            return self.get_latest_people_count_or_404()
+        except exceptions.NotFound:
+            return None
 
     def get_latest_people_count_or_404(self) -> CameraPeopleCount:
         try:
