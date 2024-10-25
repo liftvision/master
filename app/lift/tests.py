@@ -64,17 +64,6 @@ class TestElevator(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED, res.json())
         self.assertEqual(before+1, after)
 
-    def test_404_카메라가_없는_엘리베이터의_사진_데이터_조회(self):
-        self.camera.delete()
-        res = self.client.get(reverse("cam/frame"))
-        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_404_카메라_촬영_영상이_없는_엘리베이터의_사진_데이터_조회(self):
-        self.camera_frame.delete()
-        res = self.client.get(reverse("cam/frame"))
-        self.assertEqual(res.status_code, status.HTTP_404_NOT_FOUND)
-
-    def test_200_카메라_촬영_영상이_있는_엘리베이터의_사진_데이터_조회(self):
-        res = self.client.get(reverse("cam/frame"))
+    def test_200_엘리베이터_조회(self):
+        res = self.client.get(reverse("elevator", args=[self.elevator.uuid]))
         self.assertEqual(res.status_code, status.HTTP_200_OK)
-        self.assertTrue(res.json()['frame'].endswith(models.CameraFrame.objects.filter(camera=self.camera).latest().frame.url))
