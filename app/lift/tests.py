@@ -63,3 +63,7 @@ class TestElevator(TestCase):
         after = models.CameraFrame.objects.filter(camera=self.camera).count()
         self.assertEqual(res.status_code, status.HTTP_201_CREATED, res.json())
         self.assertEqual(before+1, after)
+
+    def test_200_엘리베이터_조회(self):
+        res = self.client.get(reverse("elevator", args=[self.elevator.uuid]))
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
