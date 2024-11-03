@@ -1,11 +1,16 @@
 from __future__ import annotations
 
+import datetime
+import os
 import typing
 import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.db.models.signals import pre_delete
 from django.utils import timezone
+from django.dispatch import receiver
 from rest_framework import exceptions
 
 
@@ -109,3 +114,17 @@ class CameraPeopleCount(models.Model):
 
     class Meta:
         get_latest_by = 'created_at'
+
+
+@receiver(post_save, sender=CameraFrame)
+def post_camera_frame_save(sender, instance: CameraFrame, created, **kwargs):
+    if created:
+        instance.camera.remove_frames(
+            timezone.now() - datetime.timedelta(minutes=5))
+
+
+@receiver(pre_delete, sender=CameraFrame)
+def pre_camera_frame_delete(sender, instance: CameraFrame, **kwargs):
+    if instance.frame:
+        if os.path.isfile(instance.frame.path):
+            os.remove(instance.frame.path)
