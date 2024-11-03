@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-import uuid
 import typing
+import uuid
 
 from django.contrib.auth.models import User
 from django.db import models
@@ -87,6 +87,10 @@ class Camera(models.Model):
             return CameraPeopleCount.objects.filter(camera=self).latest()
         except CameraPeopleCount.DoesNotExist:
             raise exceptions.NotFound('Camera does not have any people count recorded.')
+
+    def remove_frames(self, older_than: timezone.datetime):
+        CameraFrame.objects.filter(
+            camera=self, created_at__lt=older_than).delete()
 
 
 class CameraFrame(models.Model):
