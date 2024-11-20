@@ -17,7 +17,8 @@ COPY app /app
 EXPOSE 80
 
 
-RUN ./manage.py migrate
-RUN ./manage.py collectstatic --noinput
+RUN ./manage.py makemigrations \
+&& ./manage.py migrate \
+&& ./manage.py collectstatic
 
 CMD ["./manage.py", "runserver", "--insecure", "0.0.0.0:80"]
