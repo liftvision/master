@@ -21,4 +21,4 @@ RUN ./manage.py makemigrations \
 && ./manage.py migrate \
 && ./manage.py collectstatic
 
-CMD ["./manage.py", "runserver", "--insecure", "0.0.0.0:80"]
+CMD ["./manage.py", "runserver", "--insecure", "0.0.0.0:8000"]
